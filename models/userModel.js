@@ -5,15 +5,40 @@ const validator = require("validator");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  name: { type: String, required: true },
-  surname: { type: String, required: true },
+  name: {
+    type: String,
+    required: [true, 'Name is required'],
+    validate: {
+      validator: function(name) {
+        return /^[A-Za-z\s]+$/.test(name) && name.trim().length > 0;
+      },
+      message: 'Name must not contain numbers and cannot be just spaces'
+    }
+  },
+  surname: {
+    type: String,
+    required: [true, 'Surname is required'],
+    validate: {
+      validator: function(surname) {
+        return /^[A-Za-z\s]+$/.test(surname) && surname.trim().length > 0;
+      },
+      message: 'Surname must not contain numbers and cannot be just spaces'
+    }
+  },
   email: {
     type: String,
     required: true,
     unique: true,
+    validate: [validator.isEmail, 'Invalid email format']
   },
-  password: { type: String, required: true },
-  admin: Boolean,
+  password: { 
+    type: String, 
+    required: true 
+  },
+  admin: { 
+    type: Boolean, 
+    default: false 
+  },
 });
 
 userSchema.statics.signup = async function (

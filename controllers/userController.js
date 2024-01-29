@@ -43,15 +43,18 @@ const infoUser = async (req, res) => {
   const token = authorization.split(" ")[1];
 
   try {
-    const _id = jwt.verify(token, process.env.SECRET);
+    const { _id } = jwt.verify(token, process.env.SECRET);
 
-    const user = await User.findOne({ _id });
+    const user = await User.findById(_id);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
     res.status(200).json(user);
   } catch (error) {
-    console.log(error);
     res.status(401).json({ error: "Request is not authorized" });
   }
 };
+
 
 module.exports = {
   loginUser,

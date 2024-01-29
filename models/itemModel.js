@@ -9,10 +9,8 @@ const itemSchema = new mongoose.Schema({
   quantity: { type: Number, required: true },
   shipping1: { type: Boolean, required: true },
   shipping2: { type: Boolean, required: true },
-  rating: { type: Number, default: 0 },
-  ratingSum: { type: Number, required: false },
-  ratingCount: { type: Number, required: false },
 },{timestamps: true}
 );
+
 
 module.exports = mongoose.model("Item", itemSchema);
